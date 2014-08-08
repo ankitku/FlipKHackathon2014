@@ -24,9 +24,9 @@ public class CustomerLocationUpdater implements ConnectionCallbacks,
 	private static LocationClient mLocationClient;
 	private static final String TAG = "LocationUpdater";
 	private static final LocationRequest REQUEST = LocationRequest.create()
-			.setInterval(5000) // 5 seconds
+			.setInterval(1000) // 5 seconds
 			.setFastestInterval(16) // 16ms = 60fps
-			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+			.setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
 	public void start(Context context) {
 		setUpLocationClientIfNeeded(context);
@@ -71,42 +71,15 @@ public class CustomerLocationUpdater implements ConnectionCallbacks,
 	public void onDisconnected() {
 	}
 
-	public Location getLastKnownLocation(Context context) {
-		Log.d(TAG, "" + mLocationClient.isConnected());
-		if (mLocationClient != null && mLocationClient.isConnected()
-				&& mLocationClient.getLastLocation() != null) {
-			Location lastLoc = mLocationClient.getLastLocation();
-			
-			Log.d(TAG, "mlocationclient" + lastLoc + "|Age="
-					+ getAgeOfLocation(lastLoc));
-			if (lastLoc == null || getAgeOfLocation(lastLoc) >= 300)
-				return null;
+	public static Location getLastKnownLocation(Context context) {
+		Location mCurrentLocation;
+	    mCurrentLocation = mLocationClient.getLastLocation();
+//	    if(mCurrentLocation == null)
+//	    	mCurrentLocation = new Location(l)
+//			lastKnownNetworkLocation.setLatitude(12.926934);
+//			lastKnownNetworkLocation.setLongitude(77.6327);
 
-			return lastLoc;
-		} else {
-			Log.d(TAG, "location manager selecting best data");
-
-			LocationManager locationManager = (LocationManager) context
-					.getSystemService(Context.LOCATION_SERVICE);
-
-			Location lastKnownNetworkLocation = locationManager
-					.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			Location lastKnownGPSLocation = locationManager
-					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			Location lastKnownPassiveLocation = locationManager
-					.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-
-			long ageNetwork = getAgeOfLocation(lastKnownNetworkLocation);
-			long ageGPS = getAgeOfLocation(lastKnownGPSLocation);
-			long agePassive = getAgeOfLocation(lastKnownPassiveLocation);
-
-			Location desiredLoc = ageNetwork < agePassive ? (ageNetwork < ageGPS ? lastKnownNetworkLocation
-					: lastKnownGPSLocation)
-					: (agePassive < ageGPS ? lastKnownPassiveLocation
-							: lastKnownGPSLocation);
-			
-			return desiredLoc;
-		}
+		return mCurrentLocation;
 	}
 
 	public long getAgeOfLocation(Location loc) {

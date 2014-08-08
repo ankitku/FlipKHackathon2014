@@ -1,8 +1,11 @@
 package com.example.swaggycustomer;
 
-import com.android.volley.toolbox.Volley;
+import java.util.ArrayList;
 
+import models.Item;
 import android.app.Application;
+
+import com.android.volley.toolbox.Volley;
 
 public class SwaggyCustomerApplication extends Application {
 
@@ -10,6 +13,7 @@ public class SwaggyCustomerApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		SwaggyCustomer.queue = Volley.newRequestQueue(getApplicationContext());
+		SwaggyCustomer.items = new ArrayList<Item>();
 	}
 	
 }
