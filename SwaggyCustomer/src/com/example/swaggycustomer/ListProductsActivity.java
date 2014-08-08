@@ -67,9 +67,9 @@ public class ListProductsActivity extends SwaggyCustomerActivity {
 
 		List<NameValuePair> list = new ArrayList<NameValuePair>();
 		list.add(new BasicNameValuePair("latitude", ""
-				+ 12.931552));
+				+ 12.928036));
 		list.add(new BasicNameValuePair("longitude", ""
-				+ 77.621428));
+				+ 77.633037));
 
 		JsonArrayRequest jsonRequest = new JsonArrayRequest(Utils.getFilledUrl(
 				UrlConstants.getListings, list),
@@ -86,8 +86,10 @@ public class ListProductsActivity extends SwaggyCustomerActivity {
 					            while(iter.hasNext()){
 					                String key = (String)iter.next();
 					                String value = jsob.getString(key);
-					                SwaggyCustomer.items.add(SwaggyCustomer.gson.fromJson(
-											value.toString(), Item.class));
+					                Item it = SwaggyCustomer.gson.fromJson(
+											value.toString(), Item.class);
+					                it.getDelivery().setListingId(key);
+					                SwaggyCustomer.items.add(it);
 					                Log.d("Key Value","key: "+key+" Value: "+value);
 					            }
 					            

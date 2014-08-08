@@ -2,7 +2,7 @@ package models;
 
 public class Delivery {
 	
-	String contactNo , name, deviceId ;
+	String contactNo , name, deviceId, listingId ;
 
 	public String getContactNo() {
 		return contactNo;
@@ -16,5 +16,12 @@ public class Delivery {
 		return deviceId;
 	}
 	
+	public String getListingId() {
+		return listingId;
+	}
+	
+	public void setListingId(String id) {
+		listingId = id;
+	}
 
 }
